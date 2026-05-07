@@ -1,0 +1,36 @@
+.PHONY: install build start stop logs
+
+# Installation des dépendances
+install:
+	@echo "📦 Installation des dépendances..."
+	cd back && cargo build --release
+	cd mavrickcc && npm ci
+
+# Build pour production
+build: install
+	@echo "🔨 Build production..."
+	cd mavrickcc && npm run build
+
+# Lancer l'appli en production
+start:
+	@echo "🚀 Démarrage de l'application..."
+	surreal start --user root --pass root rocksdb:./data/surreal.db &
+	sleep 2
+	cd back && RUST_LOG=warn cargo run --release &
+	@echo "✅ Application lancée !"
+	@echo "Backend: http://localhost:3000"
+	@echo "Frontend: http://localhost:5173"
+
+# Build + Start
+run: build start
+
+# Arrêter l'appli
+stop:
+	@echo "⛔ Arrêt de l'application..."
+	pkill -f "surreal start" || true
+	pkill -f "target/release/back" || true
+	pkill -f "npm run dev" || true
+
+# Logs
+logs:
+	tail -f *.log
