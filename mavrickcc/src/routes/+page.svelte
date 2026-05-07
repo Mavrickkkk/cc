@@ -103,18 +103,18 @@
     </div>
     {#if currentPage === 0}
         <div class="flex flex-wrap gap-2 items-center justify-center w-full">
-            <img src="/beaucamps-le/b.png" alt="b" class="letter mx-[-10px] h-24 object-contain"/>
-            <img src="/beaucamps-le/e.png" alt="e" class="letter mx-[-10px] h-36 object-contain"/>
-            <img src="/beaucamps-le/a.png" alt="a" class="letter mx-[-10px] h-32 object-contain"/>
-            <img src="/beaucamps-le/u.png" alt="u" class="letter mx-[-10px] h-28 object-contain"/>
-            <img src="/beaucamps-le/c.png" alt="c" class="letter mx-[-5px] h-24 object-contain"/>
-            <img src="/beaucamps-le/a2.png" alt="a2" class="letter mx-[-10px] h-32 object-contain"/>
-            <img src="/beaucamps-le/m.png" alt="m" class="letter mx-[-5px] h-24 object-contain"/>
-            <img src="/beaucamps-le/p.png" alt="p" class="letter mx-[-15px] h-32 object-contain"/>
-            <img src="/beaucamps-le/s.png" alt="s" class="letter mx-[-20px] h-32 object-contain"/>
-            <img src="/beaucamps-le/-.png" alt="-" class="letter h-24 object-contain"/>
-            <img src="/beaucamps-le/l.png" alt="l" class="letter mx-[-15px] h-32 object-contain"/>
-            <img src="/beaucamps-le/e2.png" alt="e" class="letter h-24 object-contain"/>
+            <img src="/beaucamps-le/b.png" alt="b" class="letter mx-[-10px] h-24 object-contain opacity-0"/>
+            <img src="/beaucamps-le/e.png" alt="e" class="letter mx-[-10px] h-36 object-contain opacity-0"/>
+            <img src="/beaucamps-le/a.png" alt="a" class="letter mx-[-10px] h-32 object-contain opacity-0"/>
+            <img src="/beaucamps-le/u.png" alt="u" class="letter mx-[-10px] h-28 object-contain opacity-0"/>
+            <img src="/beaucamps-le/c.png" alt="c" class="letter mx-[-5px] h-24 object-contain opacity-0"/>
+            <img src="/beaucamps-le/a2.png" alt="a2" class="letter mx-[-10px] h-32 object-contain opacity-0"/>
+            <img src="/beaucamps-le/m.png" alt="m" class="letter mx-[-5px] h-24 object-contain opacity-0"/>
+            <img src="/beaucamps-le/p.png" alt="p" class="letter mx-[-15px] h-32 object-contain opacity-0"/>
+            <img src="/beaucamps-le/s.png" alt="s" class="letter mx-[-20px] h-32 object-contain opacity-0"/>
+            <img src="/beaucamps-le/-.png" alt="-" class="letter h-24 object-contain opacity-0"/>
+            <img src="/beaucamps-le/l.png" alt="l" class="letter mx-[-15px] h-32 object-contain opacity-0"/>
+            <img src="/beaucamps-le/e2.png" alt="e" class="letter h-24 object-contain opacity-0"/>
         </div>
     {:else}
         <img
