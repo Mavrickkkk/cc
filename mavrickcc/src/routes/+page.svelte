@@ -7,14 +7,14 @@
         animateLettersIn,
         animateLettersOut,
     } from '$lib';
-    import { browser } from '$app/environment';
+    import {browser} from '$app/environment';
     import {addCTAEffect} from "$lib/js/beaucamps-le.js";
 
     export async function load() {
         if (browser) {
             fetch('http://127.0.0.1:3000/api/track', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     page: window.location.pathname,
                     user_agent: navigator.userAgent
@@ -35,16 +35,43 @@
     let currentPage = $state(0);
     let gsapLib;
 
+    let showIntro = $state(true);
+
     onMount(() => {
         import('gsap').then(({gsap}) => {
             gsapLib = gsap;
+
+            const intro = document.querySelector('.intro-screen');
             const letters = document.querySelectorAll('.letter');
             const arrows = document.querySelectorAll('.arrow');
+            const dots = document.querySelectorAll('.dot');
             const downloadBtn = document.querySelector('.download-btn');
-            animateLetters(letters, [], gsap, startWiggle);
-            setupHoverWiggle(arrows, gsap, 0.15);
-            addCTAEffect([downloadBtn], gsap);
+
+            gsap.set([letters, arrows, dots, downloadBtn], {opacity: 0, scale: 0});
+
+            const timeline = gsap.timeline({delay: 3});
+
+            timeline.to(intro, {opacity: 0, duration: 1}, 0);
+
+            timeline.add(() => {
+                showIntro = false;
+            });
+
+            timeline.add(() => {
+                animateLetters(letters, [], gsap, startWiggle);
+            })
+
+            timeline.to([arrows, dots], {opacity: 1, scale: 1, duration: 0.4, ease: 'back.out'}, '+=2.5');
+
+            timeline.to(downloadBtn, {opacity: 1, scale: 1, duration: 0.4, ease: 'back.out'}, '+=0.5');
+
+            timeline.add(() => {
+
+                setupHoverWiggle(arrows, gsap, 0.15);
+                addCTAEffect([downloadBtn], gsap);
+            });
         });
+        load();
     });
 
     async function changePage(direction) {
@@ -92,13 +119,40 @@
         }
     }
 
-    load();
+
 </script>
 
+<svelte:head>
+    <title>Beaucamps-le</title>
+    <meta name="description" content="Copyright (c) 2026, Mavrick"/>
+    <style>
+        @font-face {
+            font-family: 'Delight';
+            src: url('/fonts/Delight-VF.ttf') format('truetype');
+        }
+    </style>
+</svelte:head>
+
 <div class="min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+    {#if showIntro}
+        <div
+                class="intro-screen fixed inset-0 z-[100] flex items-center justify-center"
+                style="background: #fff"
+        >
+            <div class="max-w-2xl">
+                <p style="color: #000; font-family: 'Delight'; font-size: clamp(2rem, 2vw, 3rem); font-weight: 100; text-align: center; padding: 2rem; line-height: 1.4; margin: 0">
+                    Beaucamps-le est une police d'écriture <span style="font-family: 'Delight'; font-weight: 600;">gratuite</span>, faites en bon usage.
+                </p>
+                <p style="color: #000; font-family: 'Delight'; font-size: clamp(1rem, 1vw, 1.5rem); font-weight: 200; font-style: italic; text-align: right; padding-right: 2rem; margin: 0">
+                    Mavrick
+                </p>
+            </div>
+        </div>
+    {/if}
     <div class="fixed top-[2vw] right-[2vw] z-50">
         <a href="/beaucamps-le/download/Beaucamps-Le.zip" download>
-            <img src="/beaucamps-le/download.png" alt="Télécharger" class="download-btn object-contain cursor-pointer" style="height: clamp(2.5rem, 5vw, 4rem)"/>
+            <img src="/beaucamps-le/download.png" alt="Télécharger"
+                 class="download-btn object-contain cursor-pointer opacity-0" style="height: clamp(2.5rem, 5vw, 4rem)"/>
         </a>
     </div>
     {#if currentPage === 0}
@@ -125,19 +179,20 @@
     {/if}
 
     <div class="fixed bottom-6 left-0 right-0 flex items-center justify-center gap-12 px-4">
-        <button on:click={() => changePage('left')} aria-label="Précédent">
-            <img src="/beaucamps-le/arrowleft.png" alt="Précédent" class="arrow h-24 object-contain cursor-pointer"/>
+        <button onclick={() => changePage('left')} aria-label="Précédent">
+            <img src="/beaucamps-le/arrowleft.png" alt="Précédent"
+                 class="arrow h-24 object-contain cursor-pointer opacity-0"/>
         </button>
         <div class="flex gap-2 items-center">
             {#each pages as _, i}
                 <div
-                        class="w-3 h-3 transition-all duration-300"
+                        class="dot w-3 h-3 transition-all duration-300"
                         style="background: {i === currentPage ? '#FFB000' : '#7E00FF'}"
                 ></div>
             {/each}
         </div>
 
-        <button on:click={() => changePage('right')} aria-label="Suivant">
+        <button onclick={() => changePage('right')} aria-label="Suivant">
             <img src="/beaucamps-le/arrowright.png" alt="Suivant" class="arrow h-24 object-contain cursor-pointer"/>
         </button>
     </div>
